@@ -1,6 +1,6 @@
 import 'package:chat/helpers/mostrar_alerta.dart';
 import 'package:chat/services/auth_services.dart';
-import 'package:chat/services/auth_services.dart';
+import 'package:chat/services/socket_service.dart';
 import 'package:chat/widgets/btn_azul.dart';
 import 'package:chat/widgets/custom_input.dart';
 import 'package:chat/widgets/labels_widget.dart';
@@ -48,7 +48,7 @@ class FormState extends State<Form> {
   Widget build(BuildContext context) {
 
     final authService = Provider.of<AuthService>(context);
-
+    final socketService = Provider.of<SocketService>(context);
 
     return Container(
       margin: EdgeInsets.only(top: 40),
@@ -78,7 +78,7 @@ class FormState extends State<Form> {
               final loginOk = await authService.login(emailCtrl.text.trim(), passCtrl.text.trim()); //trim() para que no se pasen espacios o tabs
               
               if ( loginOk ) {
-                //Navegar a otra pantalla
+                socketService.connect();
                 Navigator.pushReplacementNamed(context, 'usuarios');
               } else {
                 mostrarAlerta(context, 'Login incorrecto', 'Revise sus credenciales nuevamente');
